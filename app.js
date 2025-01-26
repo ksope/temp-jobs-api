@@ -42,9 +42,9 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/jobs", authenticateUser, jobsRouter);
 
 //test home page
-app.get("/", (req, res) => {
+/* app.get("/", (req, res) => {
     res.send("Jobs API");
-});
+}); */
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
