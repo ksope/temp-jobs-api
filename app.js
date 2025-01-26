@@ -7,6 +7,11 @@ const cors = require("cors");
 const xss = require("xss-clean");
 const rateLimit = require("express-rate-limit");
 
+//swagger
+const swaggerUi = require("swagger-ui-express");
+const YAML = require("yamljs");
+const swaggerDocument = YAML.load("./swagger.yaml");
+
 const express = require("express");
 const app = express();
 
@@ -37,14 +42,21 @@ app.use(helmet());
 app.use(cors());
 app.use(xss());
 
+
+//test home page
+app.get("/", (req, res) => {
+    res.send('<h1>jobs API</h1><a href="/api-use">API Documentation</a>');
+});
+
+
+app.use("/api-use", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+
+
 // routes
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/jobs", authenticateUser, jobsRouter);
 
-//test home page
-/* app.get("/", (req, res) => {
-    res.send("Jobs API");
-}); */
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
